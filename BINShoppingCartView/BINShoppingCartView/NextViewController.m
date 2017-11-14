@@ -227,10 +227,10 @@
 -(NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSMutableArray * marr = [NSMutableArray arrayWithCapacity:0];
     
-//    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"删除"handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-//        NSLog(@"点击了删除");
-//    }];
-//    [marr addObject:deleteAction];
+    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"删除"handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+        NSLog(@"点击了删除");
+    }];
+    [marr addObject:deleteAction];
     return marr;
 }
 

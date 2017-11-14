@@ -20,6 +20,9 @@
 
 #import "WHKTableViewThirtyEightCell.h"
 
+
+#import "NextViewController.h"
+
 @interface MainViewController ()<WHKTableViewThirtyEightCellDelegate,BINShoppingCartBottomViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
@@ -57,7 +60,7 @@
 
 -(BINShoppingCartBottomView *)shoppingCartView{
     if (!_shoppingCartView) {
-        _shoppingCartView = [[BINShoppingCartBottomView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.tableView.frame), kSCREEN_WIDTH, 66)];
+        _shoppingCartView = [[BINShoppingCartBottomView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.tableView.frame), kSCREEN_WIDTH, kH_ShoppingCartView)];
         _shoppingCartView.delegate = self;
     }
     
@@ -67,16 +70,23 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    self.edgesForExtendedLayout = UIRectEdgeNone;
-    self.automaticallyAdjustsScrollViewInsets = NO;
+//    self.edgesForExtendedLayout = UIRectEdgeNone;
+//    self.automaticallyAdjustsScrollViewInsets = NO;
     
     self.view.backgroundColor = [UIColor whiteColor];
-    self.title = @"开具发票";
+    self.title = @"封装TableView";
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"非封转" style:UIBarButtonItemStylePlain target:self  action:@selector(handleActionBtn)];
     
     [self createTableView];
     
     [self initData];
+    
+}
+
+-(void)handleActionBtn{
+    NextViewController * viewController = [[NextViewController alloc] init];
+    [self.navigationController pushViewController:viewController animated:YES];
     
 }
 
@@ -99,7 +109,7 @@
 
 - (void)initData{
     [self.titleMarr removeAllObjects];
-    for (NSInteger i = 0 ; i < 3; i++) {
+    for (NSInteger i = 0 ; i < 4; i++) {
         NSMutableArray * marr = nil;
         //        if (i) {
         marr = [NSMutableArray arrayWithCapacity:0];
@@ -131,7 +141,6 @@
 }
 
 - (void)reloadTableViewData{
-
     [self setupTableView];
     self.tableView.hidden = NO;
     [self.tableView reloadData];
@@ -139,7 +148,7 @@
 }
 
 - (void)createTableView{
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kSCREEN_WIDTH, CGRectGetHeight(self.view.bounds) - 166) style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kSCREEN_WIDTH, CGRectGetHeight(self.view.bounds) - kH_ShoppingCartView) style:UITableViewStyleGrouped];
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;//确保TablView能够正确的调整大小
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
@@ -148,13 +157,12 @@
     self.tableView.backgroundColor = kC_BackgroudColor;
     [self.view addSubview:self.tableView];
     
-    
-    [self.view addSubview:self.shoppingCartView];
     //    self.tableView.tableHeaderView = [self getViewWithHeight:95 isHeader:YES];
     //    self.tableView.tableFooterView = [[UIView alloc]init];
     self.tableView.hidden = YES;
     
-    [self tableViewAboutRefresh];
+    [self.view addSubview:self.shoppingCartView];
+//    [self tableViewAboutRefresh];
     
 }
 
@@ -274,16 +282,18 @@
     if (isHeader) {
         return 10;
     }
-    return 0;
+    return 0.1;
 }
 
 - (UIView *)getSectionView:(NSInteger)section isHeader:(BOOL)isHeader{
     
-    UIView * backgroudView = [UIView createViewWithRect:CGRectMake(0, 0, kSCREEN_WIDTH, self.tableView.sectionFooterHeight) tag:kTAG_VIEW];
+    UIView * backgroudView = [UIView createViewWithRect:CGRectZero tag:kTAG_VIEW];
     if (isHeader) {
+        backgroudView.frame = CGRectMake(0, 0, kSCREEN_WIDTH, self.tableView.sectionHeaderHeight);
         
     }else{
-        return nil;
+        backgroudView.frame = CGRectMake(0, 0, kSCREEN_WIDTH, self.tableView.sectionFooterHeight);
+        
     }
     return backgroudView;
 }

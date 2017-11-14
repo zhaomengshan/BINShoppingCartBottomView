@@ -42,6 +42,10 @@
 #define kSCREEN_WIDTH  ([UIScreen mainScreen].bounds.size.width)
 #define kSCREEN_HEIGHT ([UIScreen mainScreen].bounds.size.height)
 
+//强弱引用
+#define kWeakSelf(type)    __weak __typeof(type) weak##type = type;
+#define kStrongSelf(type)  __strong __typeof(type) strongSelf = type;
+
 #define kH_CONTENT_HEIGHT (SCREEN_HEIGHT - NAVIGATION_BAR_HEIGHT - STATUS_BAR_HEIGHT)
 
 

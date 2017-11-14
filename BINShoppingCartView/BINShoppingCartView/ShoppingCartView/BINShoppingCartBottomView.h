@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define kH_ShoppingCartView 64
+
 @class BINShoppingCartBottomView;
 @protocol BINShoppingCartBottomViewDelegate <NSObject>
 

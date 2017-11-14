@@ -28,6 +28,8 @@
 		51772CB11FBA8C64005A24BB /* UIScrollView+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 51772C9B1FBA8C64005A24BB /* UIScrollView+MJExtension.m */; };
 		51772CB21FBA8C64005A24BB /* UIScrollView+MJRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 51772C9D1FBA8C64005A24BB /* UIScrollView+MJRefresh.m */; };
 		51772CB31FBA8C64005A24BB /* UIView+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 51772C9F1FBA8C64005A24BB /* UIView+MJExtension.m */; };
+		51772CBA1FBA9DC2005A24BB /* NSObject+YYModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 51772CB61FBA9DC2005A24BB /* NSObject+YYModel.m */; };
+		51772CBB1FBA9DC2005A24BB /* YYClassInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 51772CB81FBA9DC2005A24BB /* YYClassInfo.m */; };
 		51857FA81FB9AB350040D5DA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 51857FA71FB9AB350040D5DA /* main.m */; };
 		51857FAB1FB9AB350040D5DA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 51857FAA1FB9AB350040D5DA /* AppDelegate.m */; };
 		51857FAE1FB9AB350040D5DA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51857FAD1FB9AB350040D5DA /* ViewController.m */; };
@@ -110,6 +112,11 @@
 		51772C9D1FBA8C64005A24BB /* UIScrollView+MJRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+MJRefresh.m"; sourceTree = "<group>"; };
 		51772C9E1FBA8C64005A24BB /* UIView+MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MJExtension.h"; sourceTree = "<group>"; };
 		51772C9F1FBA8C64005A24BB /* UIView+MJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MJExtension.m"; sourceTree = "<group>"; };
+		51772CB51FBA9DC2005A24BB /* NSObject+YYModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+YYModel.h"; sourceTree = "<group>"; };
+		51772CB61FBA9DC2005A24BB /* NSObject+YYModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+YYModel.m"; sourceTree = "<group>"; };
+		51772CB71FBA9DC2005A24BB /* YYClassInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYClassInfo.h; sourceTree = "<group>"; };
+		51772CB81FBA9DC2005A24BB /* YYClassInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYClassInfo.m; sourceTree = "<group>"; };
+		51772CB91FBA9DC2005A24BB /* YYModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYModel.h; sourceTree = "<group>"; };
 		51857FA31FB9AB350040D5DA /* BINShoppingCartView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BINShoppingCartView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		51857FA71FB9AB350040D5DA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		51857FA91FB9AB350040D5DA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -195,6 +202,7 @@
 		51772C6D1FBA8B10005A24BB /* Third */ = {
 			isa = PBXGroup;
 			children = (
+				51772CB41FBA9DC2005A24BB /* YYModel */,
 				51772C711FBA8C64005A24BB /* MJRefresh */,
 			);
 			path = Third;
@@ -293,6 +301,18 @@
 				51772C931FBA8C64005A24BB /* MJRefreshStateHeader.m */,
 			);
 			path = Header;
+			sourceTree = "<group>";
+		};
+		51772CB41FBA9DC2005A24BB /* YYModel */ = {
+			isa = PBXGroup;
+			children = (
+				51772CB51FBA9DC2005A24BB /* NSObject+YYModel.h */,
+				51772CB61FBA9DC2005A24BB /* NSObject+YYModel.m */,
+				51772CB71FBA9DC2005A24BB /* YYClassInfo.h */,
+				51772CB81FBA9DC2005A24BB /* YYClassInfo.m */,
+				51772CB91FBA9DC2005A24BB /* YYModel.h */,
+			);
+			path = YYModel;
 			sourceTree = "<group>";
 		};
 		51857F9A1FB9AB350040D5DA = {
@@ -526,6 +546,7 @@
 				51772CAF1FBA8C64005A24BB /* MJRefreshConst.m in Sources */,
 				51857FDC1FB9AC8F0040D5DA /* BINTableViewHandle.m in Sources */,
 				5185800E1FB9AEBC0040D5DA /* NSObject+Helper.m in Sources */,
+				51772CBA1FBA9DC2005A24BB /* NSObject+YYModel.m in Sources */,
 				518580231FB9AFA40040D5DA /* AddressInfoEnd.m in Sources */,
 				518580221FB9AFA40040D5DA /* AddressInfo.m in Sources */,
 				5185800F1FB9AEBC0040D5DA /* UIView+AddView.m in Sources */,
@@ -537,6 +558,7 @@
 				51772CA41FBA8C64005A24BB /* MJRefreshHeader.m in Sources */,
 				51772CAD1FBA8C64005A24BB /* MJRefreshStateHeader.m in Sources */,
 				518580131FB9AEBC0040D5DA /* NSString+Helper.m in Sources */,
+				51772CBB1FBA9DC2005A24BB /* YYClassInfo.m in Sources */,
 				51772CA01FBA8C64005A24BB /* MJRefreshAutoFooter.m in Sources */,
 				518580171FB9AEBC0040D5DA /* NSMutableArray+Helper.m in Sources */,
 				51772CA31FBA8C64005A24BB /* MJRefreshFooter.m in Sources */,

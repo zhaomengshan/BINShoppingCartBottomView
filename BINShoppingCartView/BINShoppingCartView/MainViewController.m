@@ -10,6 +10,10 @@
 
 #import "BINMarco.h"
 
+#import "MJRefresh.h"
+#import "YYModel.h"
+
+
 
 #import "BINTableViewHandleSections.h"
 
@@ -29,6 +33,8 @@
 @property (nonatomic, strong) NSMutableArray *titleMarr;
 
 @property (nonatomic, strong) BINTableViewHandleSections *tableHandler;
+
+@property (nonatomic, assign) NSInteger pageIndex;
 
 @property (nonatomic, strong) BINShoppingCartBottomView *shoppingCartView;
 
@@ -162,7 +168,7 @@
     self.tableView.hidden = YES;
     
     [self.view addSubview:self.shoppingCartView];
-//    [self tableViewAboutRefresh];
+    [self tableViewAboutRefresh];
     
 }
 
@@ -195,38 +201,38 @@
 }
 
 - (void)tableViewAboutRefresh{
-    //    kWeakSelf(self);
-    //    // 设置自动切换透明度(在导航栏下面自动隐藏)
-    //    self.tableView.mj_header.automaticallyChangeAlpha = YES;
-    //    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-    //        kStrongSelf(weakself);
-    //        [strongSelf loadNewData];
-    //
-    //    }];
-    //    // 上拉刷新
-    //    self.tableView.mj_footer.automaticallyHidden = YES;
-    //    self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-    //        kStrongSelf(weakself);
-    //        [strongSelf loadMoreData];
-    //
-    //    }];
+    kWeakSelf(self);
+    // 设置自动切换透明度(在导航栏下面自动隐藏)
+    self.tableView.mj_header.automaticallyChangeAlpha = YES;
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        kStrongSelf(weakself);
+        [strongSelf loadNewData];
+
+    }];
+    // 上拉刷新
+    self.tableView.mj_footer.automaticallyHidden = YES;
+    self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+        kStrongSelf(weakself);
+        [strongSelf loadMoreData];
+
+    }];
 }
 
-//- (void)loadNewData{
-//    [self.tableView.mj_footer endRefreshing];
-//    //    [self.titleMarr removeAllObjects];
-//    
-//    self.pageIndex = 1;
-//    [self requestWithInterfaceRank:@"0" pageIndex:self.pageIndex];
-//}
-//
-//- (void)loadMoreData{
-//    [self.tableView.mj_header endRefreshing];
-//    
-//    ++self.pageIndex;
-//    [self requestWithInterfaceRank:@"0" pageIndex:self.pageIndex];
-//    
-//}
+- (void)loadNewData{
+    [self.tableView.mj_footer endRefreshing];
+    //    [self.titleMarr removeAllObjects];
+    
+    self.pageIndex = 1;
+    [self requestWithInterfaceRank:@"0" pageIndex:self.pageIndex];
+}
+
+- (void)loadMoreData{
+    [self.tableView.mj_header endRefreshing];
+    
+    ++self.pageIndex;
+    [self requestWithInterfaceRank:@"0" pageIndex:self.pageIndex];
+    
+}
 
 - (void)setupTableView{
     CellHeightBlock heightBlock = ^CGFloat(NSIndexPath *indexPath, id item) {
@@ -452,24 +458,6 @@
 
 - (void)goPageViewWithIndexPath:(NSIndexPath *)indexPath {
     
-    switch (indexPath.row) {
-        case 0:
-        {
-            
-            
-        }
-            break;
-        case 1:
-        {
-            
-            
-            
-        }
-            break;
-        default:
-            break;
-    }
-    
 }
 
 #pragma  mark - - otherFuntons
@@ -515,6 +503,21 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+#pragma mark - - request
+- (NSMutableDictionary *)getParametersWithInterfaceRank:(NSString *)interfaceRank{
+    
+    NSMutableDictionary * paramDict = [NSMutableDictionary dictionaryWithCapacity:0];
+    
 
+    return paramDict;
+}
+
+- (void)requestWithInterfaceRank:(NSString *)interfaceRank pageIndex:(NSInteger)pageIndex{
+    NSMutableDictionary * mdict = [self getParametersWithInterfaceRank:interfaceRank];
+
+    [self.tableView.mj_header endRefreshing];
+    [self.tableView.mj_footer endRefreshing];
+    return;
+}
 
 @end

@@ -275,10 +275,22 @@
     };
     self.tableHandler.returnSectionRowsBlock = sectionRowsBlock;
     
+    
+    ReturnActionsForRowBlock actionsForRowBlock = ^NSArray<UITableViewRowAction *> *(UITableView * tableView,NSIndexPath * indexPath,id item){
+        return [self getActionsWithTableView:tableView indexPath:indexPath item:item];
+    };
+    self.tableHandler.returnActionsForRowBlock = actionsForRowBlock;
+
+//    kWeakSelf(self);
+//    self.tableHandler.returnActionsForRowBlock = ^NSArray<UITableViewRowAction *> *(UITableView *tableView, NSIndexPath *indexPath, id item) {
+//        kStrongSelf(weakself);
+//        return [strongSelf getActionsWithTableView:tableView indexPath:indexPath item:item];
+//
+//    } ;
+
 }
 
 - (NSInteger)getSectionRows:(NSInteger)section{
-    
     NSArray * array = (NSArray *)self.titleMarr[section];
     return array.count;
 }
@@ -292,7 +304,6 @@
 }
 
 - (UIView *)getSectionView:(NSInteger)section isHeader:(BOOL)isHeader{
-    
     UIView * backgroudView = [UIView createViewWithRect:CGRectZero tag:kTAG_VIEW];
     if (isHeader) {
         backgroudView.frame = CGRectMake(0, 0, kSCREEN_WIDTH, self.tableView.sectionHeaderHeight);
@@ -332,6 +343,19 @@
     
 }
 
+-(NSArray<UITableViewRowAction *> *)getActionsWithTableView:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath item:(id)item{
+
+    NSMutableArray * marr = [NSMutableArray arrayWithCapacity:0];
+    
+    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"删除"handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+        NSLog(@"点击了删除");
+    }];
+    [marr addObject:deleteAction];
+    return marr;
+
+
+}
+
 #pragma mark - - WHKTableViewThirtyEightCellDelagte
 -(void)chooseView:(WHKTableViewThirtyEightCell *)cell sender:(UIButton *)sender{
     
@@ -351,7 +375,6 @@
     DDLog(@"choose:%@_%@",self.chooseMarr,self.amountAll);
     
     [self handleShoppingCartViewDescription:self.shoppingCartView];
-    
     
     
     DDLog(@"orderTotalCount:%@_%@",@(self.chooseMarr.count),@(self.orderTotalCount));

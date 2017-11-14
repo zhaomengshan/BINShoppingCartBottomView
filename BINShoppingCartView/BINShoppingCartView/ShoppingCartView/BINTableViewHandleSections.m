@@ -133,6 +133,21 @@
     
 }
 
+-(BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
+    if (self.returnSectionRowsBlock) {
+        return YES;
+    }
+    return NO;
+}
+
+-(NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView
+                 editActionsForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    id item = [self itemAtIndexPath:indexPath] ;
+    return self.returnActionsForRowBlock(tableView,indexPath,item) ;
+    
+}
+
 -(void)setSectionCount:(NSInteger)sectionCount{
     self.sectionCountPer = sectionCount;
     

@@ -21,6 +21,8 @@ typedef UIView* (^ReturnSectionViewBlock)(NSInteger section, BOOL isHeader) ;
 
 typedef NSInteger (^ReturnSectionRowsBlock)(NSInteger section) ;
 
+typedef NSArray<UITableViewRowAction *> *(^ReturnActionsForRowBlock)(UITableView * tableView,NSIndexPath *indexPath, id item) ;
+
 @interface BINTableViewHandleSections : NSObject
 
 - (id)initWithItems:(NSArray *)anItems
@@ -33,6 +35,8 @@ typedef NSInteger (^ReturnSectionRowsBlock)(NSInteger section) ;
 @property (nonatomic, copy) ReturnSectionViewBlock  returnSectionViewBlock;
 @property (nonatomic, copy) ReturnSectionViewHeightBlock  returnSectionViewHeightBlock;
 @property (nonatomic, copy) ReturnSectionRowsBlock  returnSectionRowsBlock;
+
+@property (nonatomic, copy) ReturnActionsForRowBlock  returnActionsForRowBlock;
 
 @property (nonatomic, assign) NSInteger sectionCount;
 @property (nonatomic, assign) NSInteger sectionRowCount;

@@ -84,7 +84,14 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     id item = [self itemAtIndexPath:indexPath] ;
-    return self.heightConfigureBlock(indexPath,item) ;
+    if (self.heightConfigureBlock) {
+        return self.heightConfigureBlock(indexPath,item) ;
+
+    }else if(tableView.rowHeight){
+        return tableView.rowHeight;
+        
+    }
+    return 45 ;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -97,40 +104,42 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     
-    if (self.returnSectionViewBlock) {
+    if (self.returnSectionViewHeightBlock) {
         return self.returnSectionViewHeightBlock(section,YES);
-    }else{
-        return 0.0;
+        
+    }else if(tableView.sectionHeaderHeight){
+        return tableView.sectionHeaderHeight;
+        
     }
+    return 0.0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     
     if (self.returnSectionViewBlock) {
         return self.returnSectionViewBlock(section,YES);
-    }else{
-        return nil;
     }
-    
+    return nil;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     
-    if (self.returnSectionViewBlock) {
+    if (self.returnSectionViewHeightBlock) {
         return self.returnSectionViewHeightBlock(section,NO);
-    }else{
-        return 0.0;
+        
+    }else if(tableView.sectionFooterHeight){
+        return tableView.sectionFooterHeight;
+        
     }
+    return 0.1;
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     
     if (self.returnSectionViewBlock) {
         return self.returnSectionViewBlock(section,NO);
-    }else{
-        return nil;
     }
-    
+    return nil;
 }
 
 -(BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(nonnull NSIndexPath *)indexPath{

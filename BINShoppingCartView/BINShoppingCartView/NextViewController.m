@@ -12,7 +12,7 @@
 
 #import "MJRefresh.h"
 
-#import "WHKNetRootOrderDataModel.h"
+#import "WHKNetInvoiceDataModel.h"
 
 #import "BINShoppingCartBottomView.h"
 
@@ -106,21 +106,16 @@
         //        if (i) {
         marr = [NSMutableArray arrayWithCapacity:0];
         for (NSInteger j = 0; j < 2; j++) {
-            WHKNetOrderDataModel * dataModel = [[WHKNetOrderDataModel alloc] init];
+            WHKNetInvoiceDataModel * dataModel = [[WHKNetInvoiceDataModel alloc] init];
             
-            dataModel.orderId = [NSString stringWithFormat:@"%@",[self getRandomStr:10000000011 to:10000000099]];
-            dataModel.amount = [NSString stringWithFormat:@"%@",[self getRandomStr:100 to:10000]];
-            dataModel.logo = @"2017-04-20 19:40";
+            dataModel.orderId = [self getRandomStr:10000000011 to:10000000099];
+            dataModel.amount = [self getRandomStr:100 to:2000];
+            dataModel.time =  [NSString timeFromTimestamp:[self getRandomStr:1120000000 to:1120000099]];
             dataModel.isChoose = NO;
-            if (i%2==0) {
-                dataModel.price = @"=================";
-                dataModel.priceMin = @"===================";
-                
-            }else{
-                dataModel.price = @"在日本，二次元正在拯救没落的“刀匠”元正在拯元正在拯";
-                dataModel.priceMin = @"俞敏洪与马东谈家庭教育，他们都说了些啥元正在拯元正在拯";
-                
-            }
+            dataModel.month = [self getRandomStr:3 to:5];
+            
+            dataModel.start = @"在日本，二次元正在拯救没落的“刀匠”元正在拯元正在拯";
+            dataModel.end = @"俞敏洪与马东谈家庭教育，他们都说了些啥元正在拯元正在拯";
             [marr addSafeObjct:dataModel];
         }
         //        }
@@ -183,7 +178,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSArray *array = [self getInfomation:self.titleMarr[indexPath.section][indexPath.row] indexPath:indexPath];
-    WHKNetOrderDataModel *dataModel = self.titleMarr[indexPath.section][indexPath.row];
+    WHKNetInvoiceDataModel *dataModel = self.titleMarr[indexPath.section][indexPath.row];
     
     WHKTableViewThirtyEightCell * cell = [WHKTableViewThirtyEightCell cellWithTableView:tableView];
     [UIView OnlydisplayFirstLineView:cell.lineTop indexPath:indexPath];
@@ -235,11 +230,11 @@
 }
 
 #pragma  mark - - otherFuntons
-- (NSArray *)getInfomation:(WHKNetOrderDataModel *)dataModel indexPath:(NSIndexPath *)indexPath{
+- (NSArray *)getInfomation:(WHKNetInvoiceDataModel *)dataModel indexPath:(NSIndexPath *)indexPath{
     NSMutableArray * marr = [NSMutableArray arrayWithCapacity:0];
     //需要点击的字符不同
     NSMutableArray * textTaps = [NSMutableArray arrayWithCapacity:0];
-    [textTaps addSafeObjct:dataModel.logo];
+    [textTaps addSafeObjct:dataModel.time];
     
     NSString *label_text = [NSString stringWithFormat:@"订单号: %@  |  %@", dataModel.orderId,textTaps[0]];
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]initWithString:label_text];
@@ -267,8 +262,8 @@
     }
     [marr addSafeObjct:attributedStringNew];
     
-    [marr addSafeObjct:dataModel.price];
-    [marr addSafeObjct:dataModel.priceMin];
+    [marr addSafeObjct:dataModel.start];
+    [marr addSafeObjct:dataModel.end];
     
     return (NSArray *)marr;
 }
@@ -277,7 +272,7 @@
 -(void)chooseView:(WHKTableViewThirtyEightCell *)cell sender:(UIButton *)sender{
     
     NSIndexPath * indexPath = [self getCellIndexPathByClickView:sender tableView:self.tableView];
-    WHKNetOrderDataModel *dataModel = self.titleMarr[indexPath.section][indexPath.row];
+    WHKNetInvoiceDataModel *dataModel = self.titleMarr[indexPath.section][indexPath.row];
     dataModel.isChoose = sender.selected;
     
     if (dataModel.isChoose) {
@@ -343,8 +338,8 @@
         if ([objc isKindOfClass:[NSArray class]] || [objc isKindOfClass:[NSMutableArray class]]) {
             [self changDataModelValue:value marr:objc];
             
-        }else if([objc isKindOfClass:[WHKNetOrderDataModel class]]){
-            WHKNetOrderDataModel *dataModel = (WHKNetOrderDataModel *)objc;
+        }else if([objc isKindOfClass:[WHKNetInvoiceDataModel class]]){
+            WHKNetInvoiceDataModel *dataModel = (WHKNetInvoiceDataModel *)objc;
             dataModel.isChoose = value;
             
             if (dataModel.isChoose) {
@@ -356,7 +351,7 @@
             }
             
         }else{
-            NSAssert([objc isKindOfClass:[NSArray class]] || [objc isKindOfClass:[NSMutableArray class]] || [objc isKindOfClass:[WHKNetOrderDataModel class]], @"数据格式错误");
+            NSAssert([objc isKindOfClass:[NSArray class]] || [objc isKindOfClass:[NSMutableArray class]] || [objc isKindOfClass:[WHKNetInvoiceDataModel class]], @"数据格式错误");
         }
     }
 }
@@ -369,11 +364,11 @@
         if ([objc isKindOfClass:[NSArray class]] || [objc isKindOfClass:[NSMutableArray class]]) {
             [self getDataModelTotalCount:objc];
             
-        }else if([objc isKindOfClass:[WHKNetOrderDataModel class]]){
+        }else if([objc isKindOfClass:[WHKNetInvoiceDataModel class]]){
             ++self.orderTotalCount;
             
         }else{
-            NSAssert([objc isKindOfClass:[NSArray class]] || [objc isKindOfClass:[NSMutableArray class]] || [objc isKindOfClass:[WHKNetOrderDataModel class]], @"数据格式错误");
+            NSAssert([objc isKindOfClass:[NSArray class]] || [objc isKindOfClass:[NSMutableArray class]] || [objc isKindOfClass:[WHKNetInvoiceDataModel class]], @"数据格式错误");
         }
     }
     return self.orderTotalCount;
@@ -381,7 +376,7 @@
 
 -(NSString *)getAmountAll:(NSArray *)array{
     NSInteger amountAll = 0.0;
-    for (WHKNetOrderDataModel * dataModel in self.chooseMarr){
+    for (WHKNetInvoiceDataModel * dataModel in self.chooseMarr){
         amountAll += [dataModel.amount integerValue];
         
     }

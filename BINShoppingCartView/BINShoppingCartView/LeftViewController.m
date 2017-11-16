@@ -1,30 +1,33 @@
 //
-//  MainViewController.m
-//  ChildViewControllers
+//  LeftViewController.m
+//  BINShoppingCartView
 //
-//  Created by hsf on 2017/10/28.
+//  Created by hsf on 2017/11/16.
 //  Copyright © 2017年 BIN. All rights reserved.
 //
 
-#import "MainViewController.h"
+#import "LeftViewController.h"
 
 #import "BINMarco.h"
 
 #import "MJRefresh.h"
 #import "YYModel.h"
 
+#import "WHKNetInvoiceDataModel.h"
+
 #import "BINTableViewHandleSections.h"
 
-#import "WHKNetInvoiceDataModel.h"
+#import "BINFoldHeaderFooterView.h"//此处只使用数据模型
+
+//#import "WHKSimpleDataModel.h"
 
 #import "BINShoppingCartBottomView.h"
 
+//#import "WHKTableViewFiveCell.h"
+
 #import "WHKTableViewThirtyEightCell.h"
 
-#import "NextViewController.h"
-#import "LeftViewController.h"
-
-@interface MainViewController ()<WHKTableViewThirtyEightCellDelegate,BINShoppingCartBottomViewDelegate>
+@interface LeftViewController ()<WHKTableViewThirtyEightCellDelegate,BINShoppingCartBottomViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *titleMarr;
@@ -32,6 +35,8 @@
 @property (nonatomic, strong) BINTableViewHandleSections *tableHandler;
 
 @property (nonatomic, assign) NSInteger pageIndex;
+
+@property (nonatomic, strong) NSMutableArray *dataMarr;
 
 @property (nonatomic, strong) BINShoppingCartBottomView *shoppingCartView;
 
@@ -41,7 +46,7 @@
 
 @end
 
-@implementation MainViewController
+@implementation LeftViewController
 
 -(NSMutableArray *)titleMarr{
     if (!_titleMarr) {
@@ -49,6 +54,15 @@
         
     }
     return _titleMarr;
+    
+}
+
+-(NSMutableArray *)dataMarr{
+    if (!_dataMarr) {
+        _dataMarr = [NSMutableArray arrayWithCapacity:0];
+        
+    }
+    return _dataMarr;
     
 }
 
@@ -73,76 +87,123 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-//    self.edgesForExtendedLayout = UIRectEdgeNone;
-//    self.automaticallyAdjustsScrollViewInsets = NO;
+    //    self.edgesForExtendedLayout = UIRectEdgeNone;
+    //    self.automaticallyAdjustsScrollViewInsets = NO;
     
-    self.view.backgroundColor = [UIColor whiteColor];
-    self.title = @"封装TableView";
+    self.view.backgroundColor = [UIColor greenColor];
+    self.title = @"按月分区";
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"订单分月" style:UIBarButtonItemStylePlain target:self  action:@selector(btnClick:)];
-
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"非封转" style:UIBarButtonItemStylePlain target:self  action:@selector(btnClick:)];
-    self.navigationItem.rightBarButtonItem.tag = kTAG_BTN_RightItem;
+    [self createBarBtnItemWithTitle:nil imageName:nil isLeft:YES target:self aSelector:@selector(btnClick:) isHidden:NO];
+    
     [self createTableView];
     
-    [self initData];
-    
-}
-
--(void)handleActionBtn{
-   
     
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    self.orderTotalCount = 0;
     [self initData];
     //    [self loadNewData];
 }
 
-- (void)btnClick:(UIBarButtonItem *)sender{
+- (void)btnClick:(UIButton *)sender{
     if (sender.tag == kTAG_BTN_RightItem) {
-        NextViewController * viewController = [[NextViewController alloc] init];
-        [self.navigationController pushViewController:viewController animated:YES];
-       
+        
     }else{
-        LeftViewController * VC = [[LeftViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:NO];
+        [self.navigationController popViewControllerAnimated:YES];
         
     }
 }
 
 - (void)initData{
+    self.orderTotalCount = 0;
+    
+    [self.dataMarr removeAllObjects];
     [self.titleMarr removeAllObjects];
-    for (NSInteger i = 0 ; i < 4; i++) {
-        NSMutableArray * marr = nil;
-        //        if (i) {
-        marr = [NSMutableArray arrayWithCapacity:0];
-        for (NSInteger j = 0; j < 2; j++) {
-            WHKNetInvoiceDataModel * dataModel = [[WHKNetInvoiceDataModel alloc] init];
-            
-            dataModel.orderId = [self getRandomStr:10000000011 to:10000000099];
-            dataModel.amount = [self getRandomStr:100 to:2000];
-            dataModel.time =  [NSString timeFromTimestamp:[self getRandomStr:1120000000 to:1120000099]];
-            dataModel.isChoose = NO;
-            dataModel.month = [self getRandomStr:3 to:5];
-            
-            dataModel.start = @"在日本，二次元正在拯救没落的“刀匠”元正在拯元正在拯";
-            dataModel.end = @"俞敏洪与马东谈家庭教育，他们都说了些啥元正在拯元正在拯";
-            [marr addSafeObjct:dataModel];
-        }
-        //        }
-        [self.titleMarr addSafeObjct:marr];
+    
+    
+    for (NSInteger j = 0; j < 6; j++) {
+        WHKNetInvoiceDataModel * dataModel = [[WHKNetInvoiceDataModel alloc] init];
+        
+        dataModel.orderId = [self getRandomStr:10000000011 to:10000000099];
+        dataModel.amount = [self getRandomStr:100 to:2000];
+        dataModel.time =  [NSString timeFromTimestamp:[self getRandomStr:1120000000 to:1120000099]];
+        dataModel.isChoose = NO;
+        dataModel.month = [self getRandomStr:3 to:5];
+        
+        dataModel.start = @"在日本，二次元正在拯救没落的“刀匠”元正在拯元正在拯";
+        dataModel.end = @"俞敏洪与马东谈家庭教育，他们都说了些啥元正在拯元正在拯";
+        [self.dataMarr addSafeObjct:dataModel];
     }
+    
+    NSMutableDictionary *mdict = [NSMutableDictionary dictionaryWithCapacity:0];
+    for (WHKNetInvoiceDataModel * dataModel in self.dataMarr) {
+        [mdict setSafeObjct:dataModel.month forKey:dataModel.month];
+    }
+    NSArray * monthList = [mdict.allKeys sortedArrayUsingSelector:@selector(compare:)];
+    
+    for (NSString * month in  monthList) {
+        
+        FoldSectionModel * sectionModel = [[FoldSectionModel alloc] init];
+        sectionModel.title = month;
+        
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"month = %@",month];
+        [sectionModel.dataList addObjectsFromArray:[self.dataMarr filteredArrayUsingPredicate:predicate]];
+        
+        [self.titleMarr addSafeObjct:sectionModel];
+        
+    }
+    
     [self reloadTableViewData];
     
-    self.orderTotalCount = [self getDataModelTotalCount:self.titleMarr];
+    //    self.orderTotalCount = [self getDataModelTotalCount:self.dataMarr];
+    self.orderTotalCount = self.dataMarr.count;
     
 }
 
+
+//- (void)initData{
+//    self.orderTotalCount = 0;
+//
+//    [self.titleMarr removeAllObjects];
+//    for (NSInteger i = 0 ; i < 3; i++) {
+//        NSMutableArray * marr = nil;
+////        if (i) {
+//            marr = [NSMutableArray arrayWithCapacity:0];
+//            for (NSInteger j = 0; j < 2; j++) {
+//                WHKNetOrderDataModel * dataModel = [[WHKNetOrderDataModel alloc] init];
+//
+//                dataModel.orderId = [NSString stringWithFormat:@"%@",[self getRandomStr:10000000011 to:10000000099]];
+//                dataModel.amount = [NSString stringWithFormat:@"%@",[self getRandomStr:100 to:10000]];
+//                dataModel.logo = @"2017-04-20 19:40";
+//                dataModel.isChoose = NO;
+//                if (i%2==0) {
+//                    dataModel.price = @"=================";
+//                    dataModel.priceMin = @"===================";
+//
+//                }else{
+//                    dataModel.price = @"在日本，二次元正在拯救没落的“刀匠”元正在拯元正在拯";
+//                    dataModel.priceMin = @"俞敏洪与马东谈家庭教育，他们都说了些啥元正在拯元正在拯";
+//
+//                }
+//                [marr addSafeObjct:dataModel];
+//            }
+////        }
+//        [self.titleMarr addSafeObjct:marr];
+//    }
+//    [self reloadTableViewData];
+//
+//    self.orderTotalCount = [self getDataModelTotalCount:self.titleMarr];
+
+//}
+
 - (void)reloadTableViewData{
+    [self.tableView.mj_header endRefreshing];
+    [self.tableView.mj_footer endRefreshing];
+    
+    [self removeFailRefreshView];
+    
     [self setupTableView];
     self.tableView.hidden = NO;
     [self.tableView reloadData];
@@ -150,7 +211,7 @@
 }
 
 - (void)createTableView{
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kSCREEN_WIDTH, CGRectGetHeight(self.view.bounds) - kH_ShoppingCartView) style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kSCREEN_WIDTH, CGRectGetHeight(self.view.bounds) - kH_ShoppingCartView) style:UITableViewStylePlain];
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;//确保TablView能够正确的调整大小
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
@@ -161,11 +222,12 @@
     
     //    self.tableView.tableHeaderView = [self getViewWithHeight:95 isHeader:YES];
     //    self.tableView.tableFooterView = [[UIView alloc]init];
+    
     self.tableView.hidden = YES;
     
     [self.view addSubview:self.shoppingCartView];
-    [self tableViewAboutRefresh];
     
+    [self tableViewAboutRefresh];
 }
 
 - (UIView *)getViewWithHeight:(CGFloat)height isHeader:(BOOL)isHeader{
@@ -175,20 +237,7 @@
     
     CGFloat viewWidth = CGRectGetWidth(self.view.frame);
     if (isHeader == YES) {
-        CGFloat YGap = kX_GAP*1.5;
         
-        NSString * text = @"账户金额(元)" ;
-        CGRect labRect = CGRectZero;
-        for (NSInteger i = 0; i < 2; i++) {
-            labRect = CGRectMake(YGap, YGap + (kH_LABEL + YGap)*i, viewWidth - YGap*2, kH_LABEL);
-            UILabel *label = [UIView createLabelWithRect:labRect text:text textColor:[UIColor whiteColor] tag:kTAG_LABEL+i patternType:@"1" fontSize:KFZ_Fouth backgroudColor:kC_ClearColor alignment:NSTextAlignmentLeft];
-            [backgroudView addSubview:label];
-            
-            if (i == 1){
-                label.text = @"--";
-                label.font = [UIFont systemFontOfSize:30];
-            }
-        }
         [UIView getLineWithView:backgroudView];
     }else{
         
@@ -203,20 +252,21 @@
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         kStrongSelf(weakself);
         [strongSelf loadNewData];
-
+        
     }];
     // 上拉刷新
     self.tableView.mj_footer.automaticallyHidden = YES;
     self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         kStrongSelf(weakself);
         [strongSelf loadMoreData];
-
+        
     }];
 }
 
 - (void)loadNewData{
     [self.tableView.mj_footer endRefreshing];
     //    [self.titleMarr removeAllObjects];
+    self.orderTotalCount = 0;
     
     self.pageIndex = 1;
     [self requestWithInterfaceRank:@"0" pageIndex:self.pageIndex];
@@ -271,39 +321,35 @@
     };
     self.tableHandler.returnSectionRowsBlock = sectionRowsBlock;
     
-    
-    ReturnActionsForRowBlock actionsForRowBlock = ^NSArray<UITableViewRowAction *> *(UITableView * tableView,NSIndexPath * indexPath,id item){
-        return [self getActionsWithTableView:tableView indexPath:indexPath item:item];
-    };
-    self.tableHandler.returnActionsForRowBlock = actionsForRowBlock;
-
-//    kWeakSelf(self);
-//    self.tableHandler.returnActionsForRowBlock = ^NSArray<UITableViewRowAction *> *(UITableView *tableView, NSIndexPath *indexPath, id item) {
-//        kStrongSelf(weakself);
-//        return [strongSelf getActionsWithTableView:tableView indexPath:indexPath item:item];
-//
-//    } ;
-
 }
 
 - (NSInteger)getSectionRows:(NSInteger)section{
-    NSArray * array = (NSArray *)self.titleMarr[section];
+    //    NSArray * array = (NSArray *)self.titleMarr[section];
+    FoldSectionModel * sectionModel = self.titleMarr[section];
+    NSArray * array = sectionModel.dataList;
+    
     return array.count;
 }
 
-
 - (CGFloat)getSectionHeight:(NSInteger)section isHeader:(BOOL)isHeader{
     if (isHeader) {
-        return 10;
+        return 25;
     }
     return 0.1;
 }
 
 - (UIView *)getSectionView:(NSInteger)section isHeader:(BOOL)isHeader{
+    
     UIView * backgroudView = [UIView createViewWithRect:CGRectZero tag:kTAG_VIEW];
     if (isHeader) {
-        backgroudView.frame = CGRectMake(0, 0, kSCREEN_WIDTH, self.tableView.sectionHeaderHeight);
+        backgroudView.frame = CGRectMake(0, 0, kSCREEN_WIDTH, [self getSectionHeight:section isHeader:isHeader]);
         
+        FoldSectionModel * sectionModel = self.titleMarr[section];
+        NSString * title = [NSString stringWithFormat:@"%@月",sectionModel.title];
+        CGRect labRect = CGRectMake(kX_GAP, 0, kSCREEN_WIDTH - kX_GAP*2, CGRectGetHeight(backgroudView.frame));
+        
+        UILabel * labTitle = [UILabel createLabelWithRect:labRect text:title textColor:nil tag:kTAG_LABEL+section patternType:@"2" fontSize:KFZ_Fouth backgroudColor:[UIColor clearColor] alignment:NSTextAlignmentLeft];
+        [backgroudView addSubview:labTitle];
     }else{
         backgroudView.frame = CGRectMake(0, 0, kSCREEN_WIDTH, self.tableView.sectionFooterHeight);
         
@@ -318,8 +364,12 @@
 
 - (UITableViewCell *)getCellWithTableView:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath item:(id)item{
     
-    NSArray *array = [self getInfomation:self.titleMarr[indexPath.section][indexPath.row] indexPath:indexPath];
-    WHKNetInvoiceDataModel *dataModel = self.titleMarr[indexPath.section][indexPath.row];
+    //    NSArray *array = [self getInfomation:sectionModel.dataList[indexPath.row] indexPath:indexPath];
+    //    WHKNetOrderDataModel *dataModel = self.titleMarr[indexPath.section][indexPath.row];
+    
+    FoldSectionModel * sectionModel = self.titleMarr[indexPath.section];
+    WHKNetInvoiceDataModel *dataModel = sectionModel.dataList[indexPath.row];
+    NSArray *array = [self getInfomation:dataModel indexPath:indexPath];
     
     WHKTableViewThirtyEightCell * cell = [WHKTableViewThirtyEightCell cellWithTableView:tableView];
     [UIView OnlydisplayFirstLineView:cell.lineTop indexPath:indexPath];
@@ -333,30 +383,26 @@
     cell.imgLabViewTwo.imgView.image = [UIImage imageNamed:@"img_addressTip_yellow.png"];
     cell.imgLabViewTwo.labelTitle.text = array[3];
     
-    
     [UIView getLineWithView:cell];
     return cell;
     
 }
 
--(NSArray<UITableViewRowAction *> *)getActionsWithTableView:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath item:(id)item{
 
-    NSMutableArray * marr = [NSMutableArray arrayWithCapacity:0];
+- (WHKNetInvoiceDataModel *)getModelWithIndexPath:(NSIndexPath *)indexPath{
+    FoldSectionModel * sectionModel = self.titleMarr[indexPath.section];
+    WHKNetInvoiceDataModel *dataModel = sectionModel.dataList[indexPath.row];
     
-    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"删除"handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-        NSLog(@"点击了删除");
-    }];
-    [marr addObject:deleteAction];
-    return marr;
-
-
+    return dataModel;
 }
 
 #pragma mark - - WHKTableViewThirtyEightCellDelagte
 -(void)chooseView:(WHKTableViewThirtyEightCell *)cell sender:(UIButton *)sender{
     
     NSIndexPath * indexPath = [self getCellIndexPathByClickView:sender tableView:self.tableView];
-    WHKNetInvoiceDataModel *dataModel = self.titleMarr[indexPath.section][indexPath.row];
+    //    WHKNetOrderDataModel *dataModel = self.titleMarr[indexPath.section][indexPath.row];
+    WHKNetInvoiceDataModel *dataModel = [self getModelWithIndexPath:indexPath];
+    
     dataModel.isChoose = sender.selected;
     
     if (dataModel.isChoose) {
@@ -401,6 +447,7 @@
         [self handleShoppingCartViewDescription:view];
         
     }else{
+       
         
         
     }
@@ -422,6 +469,9 @@
         if ([objc isKindOfClass:[NSArray class]] || [objc isKindOfClass:[NSMutableArray class]]) {
             [self changDataModelValue:value marr:objc];
             
+        }else if([objc isKindOfClass:[FoldSectionModel class]]){
+            [self changDataModelValue:value marr:((FoldSectionModel *)objc).dataList];
+            
         }else if([objc isKindOfClass:[WHKNetInvoiceDataModel class]]){
             WHKNetInvoiceDataModel *dataModel = (WHKNetInvoiceDataModel *)objc;
             dataModel.isChoose = value;
@@ -435,25 +485,27 @@
             }
             
         }else{
-            NSAssert([objc isKindOfClass:[NSArray class]] || [objc isKindOfClass:[NSMutableArray class]] || [objc isKindOfClass:[WHKNetInvoiceDataModel class]], @"数据格式错误");
+            NSAssert([objc isKindOfClass:[NSArray class]] || [objc isKindOfClass:[NSMutableArray class]] || [objc isKindOfClass:[FoldSectionModel class]]|| [objc isKindOfClass:[WHKNetInvoiceDataModel class]], @"数据格式错误");
         }
     }
 }
 
+
 -(NSInteger)getDataModelTotalCount:(NSArray *)marr{
     if (marr.count == 0) return 0;
-    
-    //    NSInteger orderTotalCount = 0;
     
     for (id objc in marr) {
         if ([objc isKindOfClass:[NSArray class]] || [objc isKindOfClass:[NSMutableArray class]]) {
             [self getDataModelTotalCount:objc];
             
+        }else if([objc isKindOfClass:[FoldSectionModel class]]){
+            [self getDataModelTotalCount:((FoldSectionModel *)objc).dataList];
+            
         }else if([objc isKindOfClass:[WHKNetInvoiceDataModel class]]){
             ++self.orderTotalCount;
             
         }else{
-            NSAssert([objc isKindOfClass:[NSArray class]] || [objc isKindOfClass:[NSMutableArray class]] || [objc isKindOfClass:[WHKNetInvoiceDataModel class]], @"数据格式错误");
+            NSAssert([objc isKindOfClass:[NSArray class]] || [objc isKindOfClass:[NSMutableArray class]] || [objc isKindOfClass:[FoldSectionModel class]] || [objc isKindOfClass:[WHKNetInvoiceDataModel class]], @"数据格式错误");
         }
     }
     return self.orderTotalCount;
@@ -476,6 +528,23 @@
 
 - (void)goPageViewWithIndexPath:(NSIndexPath *)indexPath {
     
+    switch (indexPath.row) {
+        case 0:
+        {
+            
+            
+        }
+            break;
+        case 1:
+        {
+            
+            
+            
+        }
+            break;
+        default:
+            break;
+    }
 }
 
 #pragma  mark - - otherFuntons
@@ -521,21 +590,41 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 #pragma mark - - request
 - (NSMutableDictionary *)getParametersWithInterfaceRank:(NSString *)interfaceRank{
     
     NSMutableDictionary * paramDict = [NSMutableDictionary dictionaryWithCapacity:0];
     
-
+//    WHKUserDataModel * userModel = [WHKUserDataModel sharedInstance];
+//    [paramDict setSafeObjct:userModel.userId forKey:@"userId"];
+    switch ([interfaceRank integerValue]) {
+        case 0:
+        {
+            [paramDict setSafeObjct:@"api.wallet.invoiceList" forKey:@"r"];
+            [paramDict setSafeObjct:[NSString stringFromInter:self.pageIndex] forKey:@"page"];
+            
+        }
+            break;
+        default:
+            break;
+    }
     return paramDict;
 }
 
 - (void)requestWithInterfaceRank:(NSString *)interfaceRank pageIndex:(NSInteger)pageIndex{
-    NSMutableDictionary * mdict = [self getParametersWithInterfaceRank:interfaceRank];
-
+    
     [self.tableView.mj_header endRefreshing];
     [self.tableView.mj_footer endRefreshing];
     return;
 }
 
+- (void)failRefresh{
+    [self loadNewData];
+    
+}
+
+
 @end
+
+

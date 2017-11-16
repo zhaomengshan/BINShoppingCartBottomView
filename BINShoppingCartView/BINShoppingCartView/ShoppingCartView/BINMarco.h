@@ -18,7 +18,7 @@
 
 #import "NSString+Helper.h"
 #import "NSMutableArray+Helper.h"
-#import "NSDictionary+Helper.h"
+#import "NSMutableDictionary+Helper.h"
 
 #import "UIImage+Helper.h"
 
